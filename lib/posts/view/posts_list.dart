@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:market_app/posts/posts.dart';
 
 class PostsList extends StatefulWidget {
+  const PostsList({Key? key}) : super(key: key);
+
   @override
   _PostsListState createState() => _PostsListState();
 }

@@ -62,27 +62,6 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     }
   }
 
-  Future<List<Post>> _fetchPosts([int startIndex = 0]) async {
-    final response = await httpClient.get(
-      Uri.https(
-        'jsonplaceholder.typicode.com',
-        '/posts',
-        <String, String>{'_start': '$startIndex', '_limit': '$_postLimit'},
-      ),
-    );
-    if (response.statusCode == 200) {
-      final body = json.decode(response.body) as List;
-      return body.map((dynamic json) {
-        return Post(
-          id: json['id'] as int,
-          title: json['title'] as String,
-          body: json['body'] as String,
-        );
-      }).toList();
-    }
-    throw Exception('error fetching posts');
-  }
-
   Future<List<Item>> _fetchItems([int startIndex = 0]) async {
     final response = await httpClient.get(
       Uri.https('api.mercadolibre.com', '/sites/MLU/search', {'q': 'notebook'}),
@@ -100,5 +79,24 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       }).toList();
     }
     throw Exception('error fetching posts');
+  }
+
+  Future<ItemDetail> _fetchItemDetail(String itemID,
+      [int startIndex = 0]) async {
+    final response = await httpClient.get(
+      Uri.https('api.mercadolibre.com', '/items/$itemID}'),
+    );
+    if (response.statusCode == 200) {
+      final body = json.decode(response.body);
+      return ItemDetail(
+          id: body['id'] as String,
+          shortTitle: body['title'].toString().split(',')[0],
+          title: body['title'] as String,
+          secureThumbnail: body['secure_thumbnail'] as String,
+          price: body['price'].toString(),
+          currencyId: body['currency_id'] as String,
+          pictures: body['pictures'] as List<dynamic>);
+    }
+    throw Exception('error fetching item');
   }
 }

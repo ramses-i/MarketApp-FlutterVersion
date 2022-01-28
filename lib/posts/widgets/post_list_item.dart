@@ -6,6 +6,7 @@ class PostListItem extends StatelessWidget {
 
   //final Post post;
   final Item post;
+  final String query = '';
 
   @override
   Widget build(BuildContext context) {
@@ -27,4 +28,7 @@ class PostListItem extends StatelessWidget {
       ),
     ));
   }
+
+
+
 }
